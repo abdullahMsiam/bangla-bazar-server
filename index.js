@@ -24,10 +24,10 @@ async function run() {
         const userCollection = userDB.collection("userCollection");
 
         app.post("/user", async (req, res) => {
-            const user = {
-                name: "siam",
-                age: 45,
-                mobile: 1221233434
+            const user = req.body;
+            const isUserExist = await userCollection.findOne({ email: user?.email });
+            if (isUserExist?._id) {
+                return res.send({ status: "login success" });
             }
             const result = await userCollection.insertOne(user);
             res.send(result);
