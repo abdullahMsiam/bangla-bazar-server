@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = 3000
 
@@ -31,8 +31,37 @@ async function run() {
             }
             const result = await userCollection.insertOne(user);
             res.send(result);
-            console.log(result);
+        });
+
+        // get user by email
+        app.get('/user/:email', async (req, res) => {
+            const email = req.params.email;
+
+            const result = await userCollection.findOne({ email });
+            res.send(result);
+        });
+
+        //get edit profile
+        app.get('/user/get/:id', async (req, res) => {
+            const id = req.params.id;
+
+            const result = await userCollection.findOne({ _id: new ObjectId(id) });
+            res.send(result);
+        });
+
+        // update a profile data 
+        app.patch('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const userData = req.body;
+
+            const result = await userCollection.updateOne({ email }, { $set: userData }, { upsert: true });
+            res.send(result);
         })
+
+
+
+
+
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     }
 
