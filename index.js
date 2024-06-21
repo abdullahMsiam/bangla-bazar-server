@@ -25,7 +25,6 @@ const client = new MongoClient(uri, {
 
 
 const verifyJWT = (req, res, next) => {
-
     const authorization = req.headers.authorization
 
     if (!authorization) {
