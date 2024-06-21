@@ -97,7 +97,7 @@ async function run() {
             res.send(result);
         });
 
-        // update a profile data 
+        // update a profile data by email
         app.patch('/user/:email', async (req, res) => {
             const email = req.params.email;
             const userData = req.body;
